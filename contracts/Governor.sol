@@ -6,6 +6,8 @@ import "@openzeppelin/contracts/governance/extensions/GovernorSettings.sol";
 import "@openzeppelin/contracts/governance/extensions/GovernorCountingSimple.sol";
 import "@openzeppelin/contracts/governance/extensions/GovernorVotes.sol";
 import "@openzeppelin/contracts/governance/extensions/GovernorVotesQuorumFraction.sol";
+import "@openzeppelin/contracts/interfaces/IERC721Enumerable.sol";
+
 import "./interfaces/ILensHub.sol";
 import "./interfaces/IFollowNFT.sol";
 
@@ -43,14 +45,14 @@ contract MyGovernor is Governor, GovernorSettings, GovernorCountingSimple {
         return super.votingPeriod();
     }
 
+    // Get Quorum from Lens
     function quorum(uint256 blockNumber)
         public
         view
         override
         returns (uint256)
     {
-        uint256 profileId = lensHub.defaultProfile(address(this));
-        require(profileId != 0, "No default profile set");
+        uint256 profileId = _getProfileId();
 
         address followNFTAddress = lensHub.getFollowNFT(profileId);
         require(followNFTAddress != address(0), "No followers yet");
@@ -68,8 +70,7 @@ contract MyGovernor is Governor, GovernorSettings, GovernorCountingSimple {
         override
         returns (uint256)
     {
-        uint256 profileId = lensHub.defaultProfile(address(this));
-        require(profileId != 0, "No default profile set");
+        uint256 profileId = _getProfileId();
 
         address followNFTAddress = lensHub.getFollowNFT(profileId);
         require(followNFTAddress != address(0), "No followers yet");
@@ -86,5 +87,28 @@ contract MyGovernor is Governor, GovernorSettings, GovernorCountingSimple {
         returns (uint256)
     {
         return super.proposalThreshold();
+    }
+
+    function _getProfileId() internal view returns (uint256) {
+        uint256 profileId = lensHub.defaultProfile(address(this));
+
+        if (profileId != 0) {
+            return profileId;
+        }
+
+        IERC721Enumerable lensProfileToken = IERC721Enumerable(
+            address(lensHub)
+        );
+
+        uint256 profileTokenId = lensProfileToken.tokenOfOwnerByIndex(
+            address(this),
+            0
+        );
+
+        if (profileTokenId != 0) {
+            return profileTokenId;
+        }
+
+        revert("No profile set");
     }
 }
