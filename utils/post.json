@@ -1,0 +1,20 @@
+{
+    "version":"1.0.0",
+    "metadata_id":"e0762607-a784-4aaf-a6ac-c8d1d33f7dff",
+    "description":"Collect Me Again",
+    "content":"Collect Me Again",
+    "external_url":null,
+    "image":null,
+    "imageMimeType":null,
+    "name":"Post by @maggo",
+    "attributes":
+    [
+        {
+            "traitType":"string",
+            "key":"type",
+            "value":"post"
+            }
+    ],
+    "media":[],
+    "appId":"Lenster"
+}
