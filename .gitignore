@@ -1,0 +1,16 @@
+__pycache__
+.history
+.hypothesis/
+reports/
+.test_durations
+yarn-error.log 
+build
+artifacts
+node_modules
+typechain
+.secret
+.env
+coverage.json
+coverage
+artifacts
+cache
