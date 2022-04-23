@@ -43,6 +43,7 @@ contract MyGovernor is Governor, GovernorSettings, GovernorCountingSimple {
         return super.votingPeriod();
     }
 
+    // Get Quorum from Lens
     function quorum(uint256 blockNumber)
         public
         view
