@@ -7,18 +7,19 @@ import "@openzeppelin/contracts/governance/extensions/GovernorCountingSimple.sol
 import "@openzeppelin/contracts/governance/extensions/GovernorVotes.sol";
 import "@openzeppelin/contracts/governance/extensions/GovernorVotesQuorumFraction.sol";
 import "@openzeppelin/contracts/interfaces/IERC721Enumerable.sol";
+import "@openzeppelin/contracts/interfaces/IERC721Receiver.sol";
 
 import "./interfaces/ILensHub.sol";
 import "./interfaces/IFollowNFT.sol";
 
-contract MyGovernor is Governor, GovernorSettings, GovernorCountingSimple {
+contract SpamDAO is Governor, GovernorSettings, GovernorCountingSimple, IERC721Receiver {
     ILensHub public lensHub;
 
     constructor(ILensHub _lensHub)
-        Governor("MyGovernor")
+        Governor("SpamDAO")
         GovernorSettings(
             1, /* 1 block */
-            273, /* 1 hour */
+            23, /* 5 minutes */
             0
         )
     {
@@ -110,5 +111,13 @@ contract MyGovernor is Governor, GovernorSettings, GovernorCountingSimple {
         }
 
         revert("No profile set");
+    }
+function onERC721Received(
+        address operator,
+        address from,
+        uint256 tokenId,
+        bytes calldata data
+    ) public pure override returns (bytes4) {
+        return this.onERC721Received.selector;
     }
 }

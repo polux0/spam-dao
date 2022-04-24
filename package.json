@@ -63,6 +63,7 @@
   "dependencies": {
     "@nomiclabs/hardhat-etherscan": "^2.1.1",
     "@openzeppelin/contracts": "4.5.0",
+    "@openzeppelin/subgraphs": "^0.1.7-1",
     "@tenderly/hardhat-tenderly": "^1.0.10",
     "@typechain/ethers-v5": "^7.0.0",
     "@typechain/hardhat": "^2.0.1",
