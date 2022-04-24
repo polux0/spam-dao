@@ -120,4 +120,11 @@ function onERC721Received(
     ) public pure override returns (bytes4) {
         return this.onERC721Received.selector;
     }
+function withdraw (address recipient, uint256 amount) public {
+    address payable recipient = payable(recipient);
+    require(amount > address(this).balance, 'Insufficient balance');
+    require(amount > 0, 'Invalid amount');
+    (bool succeed, bytes memory data) = recipient.call{value: amount}("");
+    require(succeed, "Failed to withdraw Ether");
+}
 }
